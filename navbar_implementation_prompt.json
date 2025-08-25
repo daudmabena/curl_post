@@ -1,0 +1,759 @@
+{
+  "component_name": "Navbar",
+  "description": "Complete implementation of the Post Man application navbar/topbar with all functions and interactions",
+  "framework_stack": {
+    "frontend": "Next.js with TypeScript",
+    "styling": "Tailwind CSS",
+    "components": "Ant Design",
+    "state_management": "Zustand",
+    "icons": "@ant-design/icons + React Icons"
+  },
+  "navbar_specifications": {
+    "height": "48px",
+    "position": "fixed_top",
+    "z_index": 1000,
+    "background": "#2D2D2D",
+    "border_bottom": "1px solid #404040",
+    "padding": "8px 16px",
+    "layout": "three_section_horizontal",
+    "responsive": true,
+    "sticky": true
+  },
+  "left_section": {
+    "width": "auto",
+    "min_width": "400px",
+    "elements": [
+      {
+        "component": "workspace_switcher",
+        "implementation": {
+          "type": "Ant Design Dropdown + Button",
+          "width": "180px",
+          "height": "32px",
+          "background": "rgba(255, 255, 255, 0.05)",
+          "border": "1px solid rgba(255, 255, 255, 0.1)",
+          "border_radius": "6px",
+          "padding": "4px 12px",
+          "hover_background": "rgba(255, 255, 255, 0.1)",
+          "active_background": "rgba(0, 212, 170, 0.1)"
+        },
+        "content": {
+          "current_workspace": {
+            "text": "Team Workspace",
+            "icon": "team",
+            "color": "#FFFFFF",
+            "font_size": "14px",
+            "font_weight": "500"
+          },
+          "dropdown_icon": {
+            "icon": "chevron-down",
+            "size": "14px",
+            "color": "#B0B0B0",
+            "position": "right"
+          }
+        },
+        "dropdown_menu": {
+          "width": "280px",
+          "max_height": "400px",
+          "background": "#2D2D2D",
+          "border": "1px solid #404040",
+          "border_radius": "8px",
+          "box_shadow": "0 8px 32px rgba(0, 0, 0, 0.3)",
+          "sections": [
+            {
+              "title": "Personal Workspaces",
+              "items": [
+                {
+                  "id": "personal_1",
+                  "name": "My Workspace",
+                  "type": "personal",
+                  "icon": "user",
+                  "active": false
+                }
+              ]
+            },
+            {
+              "title": "Team Workspaces",
+              "items": [
+                {
+                  "id": "team_1",
+                  "name": "Team Workspace",
+                  "type": "team",
+                  "icon": "team",
+                  "active": true,
+                  "members": 5
+                },
+                {
+                  "id": "team_2",
+                  "name": "NSSF Development",
+                  "type": "team",
+                  "icon": "team",
+                  "active": false,
+                  "members": 12
+                }
+              ]
+            }
+          ],
+          "footer": {
+            "actions": [
+              {
+                "text": "Create Workspace",
+                "icon": "plus",
+                "action": "create_workspace_modal"
+              },
+              {
+                "text": "Manage Workspaces",
+                "icon": "settings",
+                "action": "workspace_settings"
+              }
+            ]
+          }
+        },
+        "functionality": {
+          "switch_workspace": "updates_global_state_and_reloads_collections",
+          "create_workspace": "opens_workspace_creation_modal",
+          "manage_workspaces": "opens_workspace_management_page",
+          "keyboard_shortcut": "Ctrl+Shift+W"
+        }
+      },
+      {
+        "component": "global_search",
+        "implementation": {
+          "type": "Ant Design AutoComplete + Input",
+          "width": "250px",
+          "height": "32px",
+          "margin_left": "12px",
+          "background": "rgba(255, 255, 255, 0.05)",
+          "border": "1px solid rgba(255, 255, 255, 0.1)",
+          "border_radius": "6px",
+          "padding": "4px 12px 4px 36px",
+          "focus_border": "1px solid #00D4AA",
+          "focus_box_shadow": "0 0 0 2px rgba(0, 212, 170, 0.2)"
+        },
+        "content": {
+          "placeholder": "Search APIs/collections",
+          "prefix_icon": {
+            "icon": "search",
+            "size": "16px",
+            "color": "#B0B0B0",
+            "position": "absolute_left_12px"
+          },
+          "clear_icon": {
+            "icon": "x",
+            "size": "14px",
+            "color": "#B0B0B0",
+            "position": "absolute_right_8px",
+            "visible_when": "has_input"
+          }
+        },
+        "search_functionality": {
+          "search_types": [
+            "collections",
+            "requests",
+            "environments",
+            "history",
+            "documentation"
+          ],
+          "search_results": {
+            "max_results": 10,
+            "group_by_type": true,
+            "highlight_matches": true,
+            "keyboard_navigation": true
+          },
+          "dropdown_results": {
+            "width": "400px",
+            "max_height": "300px",
+            "background": "#2D2D2D",
+            "border": "1px solid #404040",
+            "border_radius": "8px",
+            "box_shadow": "0 8px 32px rgba(0, 0, 0, 0.3)",
+            "result_item": {
+              "height": "40px",
+              "padding": "8px 12px",
+              "hover_background": "rgba(0, 212, 170, 0.1)",
+              "selected_background": "rgba(0, 212, 170, 0.2)"
+            }
+          }
+        },
+        "keyboard_shortcuts": {
+          "open_search": "Ctrl+K",
+          "navigate_results": "Arrow Up/Down",
+          "select_result": "Enter",
+          "close_search": "Escape"
+        }
+      },
+      {
+        "component": "action_buttons",
+        "implementation": {
+          "type": "Button Group",
+          "margin_left": "12px",
+          "gap": "8px"
+        },
+        "buttons": [
+          {
+            "id": "new_button",
+            "text": "New",
+            "icon": "plus",
+            "type": "primary",
+            "width": "80px",
+            "height": "32px",
+            "background": "linear-gradient(135deg, #00D4AA 0%, #00B894 100%)",
+            "hover_background": "linear-gradient(135deg, #00B894 0%, #009A7B 100%)",
+            "color": "#FFFFFF",
+            "font_weight": "600",
+            "border_radius": "6px",
+            "dropdown": {
+              "trigger": "click",
+              "width": "200px",
+              "items": [
+                {
+                  "text": "HTTP Request",
+                  "icon": "globe",
+                  "shortcut": "Ctrl+N",
+                  "action": "create_http_request"
+                },
+                {
+                  "text": "GraphQL Request",
+                  "icon": "code",
+                  "action": "create_graphql_request"
+                },
+                {
+                  "text": "WebSocket Request",
+                  "icon": "wifi",
+                  "action": "create_websocket_request"
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "text": "Collection",
+                  "icon": "folder",
+                  "shortcut": "Ctrl+Shift+N",
+                  "action": "create_collection"
+                },
+                {
+                  "text": "Environment",
+                  "icon": "globe",
+                  "action": "create_environment"
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "text": "Documentation",
+                  "icon": "book",
+                  "action": "create_documentation"
+                }
+              ]
+            }
+          },
+          {
+            "id": "import_button",
+            "text": "Import",
+            "icon": "upload",
+            "type": "secondary",
+            "width": "80px",
+            "height": "32px",
+            "background": "rgba(255, 255, 255, 0.05)",
+            "hover_background": "rgba(255, 255, 255, 0.1)",
+            "border": "1px solid rgba(255, 255, 255, 0.1)",
+            "color": "#FFFFFF",
+            "font_weight": "500",
+            "border_radius": "6px",
+            "dropdown": {
+              "trigger": "click",
+              "width": "220px",
+              "items": [
+                {
+                  "text": "Postman Collection",
+                  "icon": "file-text",
+                  "description": "Import .json collection",
+                  "action": "import_postman_collection"
+                },
+                {
+                  "text": "OpenAPI Specification",
+                  "icon": "code",
+                  "description": "Import OpenAPI/Swagger",
+                  "action": "import_openapi"
+                },
+                {
+                  "text": "cURL Commands",
+                  "icon": "terminal",
+                  "description": "Import from cURL",
+                  "action": "import_curl"
+                },
+                {
+                  "text": "Insomnia Collection",
+                  "icon": "moon",
+                  "description": "Import from Insomnia",
+                  "action": "import_insomnia"
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "text": "Environment Variables",
+                  "icon": "settings",
+                  "action": "import_environment"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "center_section": {
+    "flex_grow": 1,
+    "min_width": "300px",
+    "max_width": "800px",
+    "elements": [
+      {
+        "component": "request_tabs",
+        "implementation": {
+          "type": "Custom Tabs Component",
+          "height": "32px",
+          "background": "transparent",
+          "overflow": "hidden",
+          "scroll_behavior": "smooth"
+        },
+        "tab_container": {
+          "display": "flex",
+          "align_items": "center",
+          "gap": "4px",
+          "overflow_x": "auto",
+          "scrollbar_width": "none",
+          "scroll_buttons": {
+            "visible_when": "overflow",
+            "left_button": {
+              "icon": "chevron-left",
+              "size": "16px",
+              "background": "#2D2D2D",
+              "position": "absolute_left"
+            },
+            "right_button": {
+              "icon": "chevron-right",
+              "size": "16px",
+              "background": "#2D2D2D",
+              "position": "absolute_right"
+            }
+          }
+        },
+        "tab_item": {
+          "min_width": "120px",
+          "max_width": "200px",
+          "height": "32px",
+          "padding": "4px 8px",
+          "border_radius": "6px",
+          "background": "rgba(255, 255, 255, 0.05)",
+          "active_background": "rgba(0, 212, 170, 0.1)",
+          "hover_background": "rgba(255, 255, 255, 0.1)",
+          "border": "1px solid transparent",
+          "active_border": "1px solid rgba(0, 212, 170, 0.3)",
+          "display": "flex",
+          "align_items": "center",
+          "gap": "6px"
+        },
+        "tab_content": {
+          "method_badge": {
+            "width": "32px",
+            "height": "20px",
+            "border_radius": "4px",
+            "font_size": "10px",
+            "font_weight": "700",
+            "text_align": "center",
+            "line_height": "20px",
+            "colors": {
+              "GET": "#4CAF50",
+              "POST": "#FF9800",
+              "PUT": "#2196F3",
+              "DELETE": "#F44336",
+              "PATCH": "#9C27B0",
+              "HEAD": "#607D8B",
+              "OPTIONS": "#795548"
+            }
+          },
+          "request_name": {
+            "font_size": "13px",
+            "font_weight": "500",
+            "color": "#FFFFFF",
+            "flex_grow": 1,
+            "overflow": "hidden",
+            "text_overflow": "ellipsis",
+            "white_space": "nowrap"
+          },
+          "unsaved_indicator": {
+            "visible_when": "has_unsaved_changes",
+            "type": "dot",
+            "size": "6px",
+            "color": "#FF9800",
+            "margin_left": "4px"
+          },
+          "close_button": {
+            "icon": "x",
+            "size": "14px",
+            "color": "#B0B0B0",
+            "hover_color": "#FFFFFF",
+            "hover_background": "rgba(255, 95, 86, 0.2)",
+            "border_radius": "2px",
+            "padding": "2px",
+            "visible_on_hover": true
+          }
+        },
+        "add_tab_button": {
+          "width": "32px",
+          "height": "32px",
+          "border_radius": "6px",
+          "background": "rgba(255, 255, 255, 0.05)",
+          "hover_background": "rgba(255, 255, 255, 0.1)",
+          "border": "1px solid rgba(255, 255, 255, 0.1)",
+          "display": "flex",
+          "align_items": "center",
+          "justify_content": "center",
+          "margin_left": "8px",
+          "icon": {
+            "type": "plus",
+            "size": "16px",
+            "color": "#B0B0B0"
+          },
+          "tooltip": "New Tab (Ctrl+T)"
+        },
+        "tab_functionality": {
+          "switch_tab": "updates_active_request_in_main_panel",
+          "close_tab": "prompts_save_if_unsaved_changes",
+          "reorder_tabs": "drag_and_drop_reordering",
+          "duplicate_tab": "right_click_context_menu",
+          "close_others": "right_click_context_menu",
+          "close_all": "right_click_context_menu"
+        },
+        "context_menu": {
+          "trigger": "right_click_on_tab",
+          "items": [
+            {
+              "text": "Duplicate Tab",
+              "icon": "copy",
+              "action": "duplicate_current_tab"
+            },
+            {
+              "text": "Close Tab",
+              "icon": "x",
+              "shortcut": "Ctrl+W",
+              "action": "close_current_tab"
+            },
+            {
+              "text": "Close Other Tabs",
+              "icon": "x-circle",
+              "action": "close_other_tabs"
+            },
+            {
+              "text": "Close All Tabs",
+              "icon": "x-square",
+              "action": "close_all_tabs"
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "text": "Save Request",
+              "icon": "save",
+              "shortcut": "Ctrl+S",
+              "action": "save_current_request",
+              "disabled_when": "no_changes"
+            }
+          ]
+        },
+        "keyboard_shortcuts": {
+          "new_tab": "Ctrl+T",
+          "close_tab": "Ctrl+W",
+          "next_tab": "Ctrl+Tab",
+          "previous_tab": "Ctrl+Shift+Tab",
+          "switch_to_tab_n": "Ctrl+1-9"
+        }
+      }
+    ]
+  },
+  "right_section": {
+    "width": "auto",
+    "min_width": "200px",
+    "elements": [
+      {
+        "component": "utility_buttons",
+        "implementation": {
+          "type": "Button Group",
+          "gap": "4px",
+          "margin_right": "12px"
+        },
+        "buttons": [
+          {
+            "id": "runner_button",
+            "icon": "play",
+            "tooltip": "Collection Runner",
+            "size": "32px",
+            "background": "transparent",
+            "hover_background": "rgba(255, 255, 255, 0.1)",
+            "color": "#B0B0B0",
+            "hover_color": "#FFFFFF",
+            "border_radius": "6px",
+            "action": "open_collection_runner"
+          },
+          {
+            "id": "proxy_button",
+            "icon": "shield",
+            "tooltip": "Proxy Settings",
+            "size": "32px",
+            "background": "transparent",
+            "hover_background": "rgba(255, 255, 255, 0.1)",
+            "color": "#B0B0B0",
+            "hover_color": "#FFFFFF",
+            "border_radius": "6px",
+            "action": "open_proxy_settings"
+          },
+          {
+            "id": "cookies_button",
+            "icon": "cookie",
+            "tooltip": "Manage Cookies",
+            "size": "32px",
+            "background": "transparent",
+            "hover_background": "rgba(255, 255, 255, 0.1)",
+            "color": "#B0B0B0",
+            "hover_color": "#FFFFFF",
+            "border_radius": "6px",
+            "action": "open_cookie_manager"
+          },
+          {
+            "id": "vault_button",
+            "icon": "key",
+            "tooltip": "Secret Vault",
+            "size": "32px",
+            "background": "transparent",
+            "hover_background": "rgba(255, 255, 255, 0.1)",
+            "color": "#B0B0B0",
+            "hover_color": "#FFFFFF",
+            "border_radius": "6px",
+            "action": "open_secret_vault"
+          },
+          {
+            "id": "trash_button",
+            "icon": "trash",
+            "tooltip": "Trash",
+            "size": "32px",
+            "background": "transparent",
+            "hover_background": "rgba(255, 255, 255, 0.1)",
+            "color": "#B0B0B0",
+            "hover_color": "#FFFFFF",
+            "border_radius": "6px",
+            "action": "open_trash"
+          }
+        ]
+      },
+      {
+        "component": "settings_menu",
+        "implementation": {
+          "type": "Ant Design Dropdown",
+          "trigger": "click",
+          "placement": "bottomRight"
+        },
+        "trigger_button": {
+          "icon": "settings",
+          "size": "32px",
+          "background": "transparent",
+          "hover_background": "rgba(255, 255, 255, 0.1)",
+          "color": "#B0B0B0",
+          "hover_color": "#FFFFFF",
+          "border_radius": "6px",
+          "tooltip": "Settings"
+        },
+        "dropdown_menu": {
+          "width": "220px",
+          "background": "#2D2D2D",
+          "border": "1px solid #404040",
+          "border_radius": "8px",
+          "box_shadow": "0 8px 32px rgba(0, 0, 0, 0.3)",
+          "items": [
+            {
+              "text": "Preferences",
+              "icon": "settings",
+              "shortcut": "Ctrl+,",
+              "action": "open_preferences"
+            },
+            {
+              "text": "Keyboard Shortcuts",
+              "icon": "keyboard",
+              "action": "open_shortcuts"
+            },
+            {
+              "text": "Theme",
+              "icon": "palette",
+              "submenu": [
+                {
+                  "text": "Dark",
+                  "checked": true,
+                  "action": "set_theme_dark"
+                },
+                {
+                  "text": "Light",
+                  "checked": false,
+                  "action": "set_theme_light"
+                },
+                {
+                  "text": "Auto",
+                  "checked": false,
+                  "action": "set_theme_auto"
+                }
+              ]
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "text": "Import Data",
+              "icon": "upload",
+              "action": "open_import_dialog"
+            },
+            {
+              "text": "Export Data",
+              "icon": "download",
+              "action": "open_export_dialog"
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "text": "Help & Support",
+              "icon": "help-circle",
+              "action": "open_help"
+            },
+            {
+              "text": "About post_call",
+              "icon": "info",
+              "action": "open_about"
+            }
+          ]
+        }
+      },
+      {
+        "component": "profile_menu",
+        "implementation": {
+          "type": "Ant Design Dropdown",
+          "trigger": "click",
+          "placement": "bottomRight",
+          "margin_left": "8px"
+        },
+        "trigger_avatar": {
+          "size": "32px",
+          "border_radius": "50%",
+          "border": "2px solid #404040",
+          "hover_border": "2px solid #00D4AA",
+          "background": "#00D4AA",
+          "fallback_text": "U",
+          "fallback_color": "#FFFFFF"
+        },
+        "dropdown_menu": {
+          "width": "240px",
+          "background": "#2D2D2D",
+          "border": "1px solid #404040",
+          "border_radius": "8px",
+          "box_shadow": "0 8px 32px rgba(0, 0, 0, 0.3)",
+          "header": {
+            "padding": "16px",
+            "border_bottom": "1px solid #404040",
+            "user_info": {
+              "name": "John Doe",
+              "email": "john.doe@nssf.go.ug",
+              "avatar_size": "48px"
+            }
+          },
+          "items": [
+            {
+              "text": "Profile Settings",
+              "icon": "user",
+              "action": "open_profile_settings"
+            },
+            {
+              "text": "Account Settings",
+              "icon": "settings",
+              "action": "open_account_settings"
+            },
+            {
+              "text": "Billing",
+              "icon": "credit-card",
+              "action": "open_billing"
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "text": "Team Management",
+              "icon": "team",
+              "action": "open_team_management"
+            },
+            {
+              "text": "Workspace Settings",
+              "icon": "home",
+              "action": "open_workspace_settings"
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "text": "Sign Out",
+              "icon": "logout",
+              "action": "sign_out",
+              "danger": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "responsive_behavior": {
+    "breakpoints": {
+      "mobile": "768px",
+      "tablet": "1024px",
+      "desktop": "1280px"
+    },
+    "mobile_adaptations": {
+      "hide_elements": [
+        "utility_buttons",
+        "global_search"
+      ],
+      "collapse_workspace_switcher": true,
+      "show_mobile_menu": true,
+      "mobile_menu_button": {
+        "icon": "menu",
+        "position": "left",
+        "action": "toggle_mobile_menu"
+      }
+    },
+    "tablet_adaptations": {
+      "reduce_spacing": true,
+      "smaller_buttons": true,
+      "hide_button_text": true
+    }
+  },
+  "state_management": {
+    "navbar_store": {
+      "current_workspace": "string",
+      "open_tabs": "array",
+      "active_tab": "string",
+      "search_query": "string",
+      "search_results": "array",
+      "user_profile": "object",
+      "ui_preferences": "object"
+    },
+    "actions": {
+      "switch_workspace": "switchWorkspace(workspaceId)",
+      "add_tab": "addTab(requestData)",
+      "close_tab": "closeTab(tabId)",
+      "switch_tab": "switchTab(tabId)",
+      "update_search": "updateSearch(query)",
+      "toggle_theme": "toggleTheme(theme)"
+    }
+  },
+  "implementation_notes": {
+    "component_structure": "Single navbar component with sub-components for each section",
+    "styling_approach": "Tailwind utility classes with custom CSS for complex interactions",
+    "accessibility": "Full keyboard navigation, ARIA labels, focus management",
+    "performance": "Virtualized tab scrolling for many open tabs",
+    "testing": "Unit tests for all interactions, integration tests for workflows"
+  }
+}

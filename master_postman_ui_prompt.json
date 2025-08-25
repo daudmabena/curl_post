@@ -1,0 +1,1696 @@
+{
+  "application_name": "post_call",
+  "application_type": "desktop_api_client_postman_clone",
+  "description": "Open-source Postman alternative with full working UI based on actual Postman screenshots",
+  "framework_stack": {
+    "frontend": "Next.js with TypeScript",
+    "desktop": "Tauri",
+    "styling": "Tailwind CSS",
+    "components": "Ant Design",
+    "state_management": "Zustand",
+    "icons": "@ant-design/icons + React Icons"
+  },
+  "ui_requirements": {
+    "goal": "Create full initial UI clone of Postman in single file before splitting into @ui/ components",
+    "must_include_dummy_data": true,
+    "responsive_design": true,
+    "sidebar_collapsible_on_small_screens": true,
+    "prepare_for_modularization": true,
+    "color_scheme": "Modern workspace with NSSF branding (green + gold)",
+    "theme_support": [
+      "dark",
+      "light"
+    ],
+    "professional_developer_focused": true
+  },
+  "complete_application_layout": {
+    "window_properties": {
+      "title": "post_call - API Development Environment",
+      "default_size": {
+        "width": "1400px",
+        "height": "900px"
+      },
+      "minimum_size": {
+        "width": "1200px",
+        "height": "800px"
+      },
+      "decorations": false,
+      "transparent_title_bar": true,
+      "resizable": true,
+      "maximizable": true,
+      "center_on_launch": true
+    },
+    "main_structure": {
+      "type": "full_height_layout",
+      "sections": [
+        {
+          "name": "custom_title_bar",
+          "height": "40px",
+          "position": "top",
+          "z_index": 1000,
+          "draggable": true
+        },
+        {
+          "name": "main_application_area",
+          "height": "calc(100vh - 40px)",
+          "position": "below_title_bar",
+          "layout": "three_panel_horizontal"
+        }
+      ]
+    }
+  },
+  "custom_title_bar": {
+    "design": {
+      "background": "linear-gradient(135deg, #2D2D2D 0%, #1E1E1E 100%)",
+      "border_bottom": "1px solid #404040",
+      "height": "40px",
+      "padding": "0 12px",
+      "display": "flex",
+      "align_items": "center",
+      "justify_content": "space-between"
+    },
+    "left_section": {
+      "elements": [
+        {
+          "type": "app_logo",
+          "component": "custom_svg_icon",
+          "size": "24px",
+          "color": "#00D4AA",
+          "margin_right": "8px"
+        },
+        {
+          "type": "app_title",
+          "text": "post_call",
+          "font_size": "14px",
+          "font_weight": "600",
+          "color": "#FFFFFF",
+          "margin_right": "16px"
+        },
+        {
+          "type": "workspace_indicator",
+          "component": "badge",
+          "text": "Personal Workspace",
+          "background": "#00D4AA",
+          "color": "#000000",
+          "border_radius": "full",
+          "padding": "2px 8px",
+          "font_size": "11px",
+          "font_weight": "500",
+          "clickable": true,
+          "tooltip": "Switch workspace"
+        }
+      ]
+    },
+    "center_section": {
+      "elements": [
+        {
+          "type": "global_search",
+          "component": "search_input",
+          "width": "300px",
+          "height": "28px",
+          "placeholder": "Search collections, requests, or documentation...",
+          "background": "rgba(255, 255, 255, 0.1)",
+          "border": "1px solid rgba(255, 255, 255, 0.2)",
+          "border_radius": "14px",
+          "padding": "0 12px 0 36px",
+          "color": "#FFFFFF",
+          "icon": "search",
+          "icon_position": "left",
+          "keyboard_shortcut": "Ctrl+K"
+        }
+      ]
+    },
+    "right_section": {
+      "elements": [
+        {
+          "type": "sync_status",
+          "component": "icon_button",
+          "icon": "cloud-sync",
+          "size": "16px",
+          "color": "#00D4AA",
+          "tooltip": "Sync status: Connected",
+          "animation": "rotate_on_sync",
+          "margin_right": "8px"
+        },
+        {
+          "type": "notifications",
+          "component": "icon_button_with_badge",
+          "icon": "bell",
+          "size": "16px",
+          "color": "#B0B0B0",
+          "badge_count": 3,
+          "badge_color": "#FF6B6B",
+          "tooltip": "3 new notifications",
+          "margin_right": "8px"
+        },
+        {
+          "type": "user_avatar",
+          "component": "avatar",
+          "size": "28px",
+          "src": "user_profile_image",
+          "fallback": "U",
+          "border": "2px solid #404040",
+          "margin_right": "12px",
+          "clickable": true,
+          "dropdown_menu": true
+        },
+        {
+          "type": "window_controls",
+          "component": "custom_window_controls",
+          "buttons": [
+            {
+              "type": "minimize",
+              "icon": "minus",
+              "color": "#FFB800",
+              "hover_background": "rgba(255, 184, 0, 0.2)"
+            },
+            {
+              "type": "maximize",
+              "icon": "square",
+              "color": "#00CA4E",
+              "hover_background": "rgba(0, 202, 78, 0.2)"
+            },
+            {
+              "type": "close",
+              "icon": "x",
+              "color": "#FF5F56",
+              "hover_background": "rgba(255, 95, 86, 0.2)"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "topbar_section": {
+    "height": "48px",
+    "background": "#2D2D2D",
+    "border_bottom": "1px solid #404040",
+    "padding": "8px 16px",
+    "layout": "horizontal_sections",
+    "sections": {
+      "left_section": {
+        "elements": [
+          {
+            "type": "workspace_switcher",
+            "component": "dropdown_button",
+            "text": "Team Workspace",
+            "icon": "chevron-down",
+            "width": "180px",
+            "background": "rgba(255, 255, 255, 0.05)",
+            "border": "1px solid rgba(255, 255, 255, 0.1)",
+            "border_radius": "6px"
+          },
+          {
+            "type": "global_search",
+            "component": "search_input",
+            "placeholder": "Search APIs/collections",
+            "width": "250px",
+            "margin_left": "12px",
+            "icon": "search"
+          },
+          {
+            "type": "action_buttons",
+            "margin_left": "12px",
+            "buttons": [
+              {
+                "text": "New",
+                "icon": "plus",
+                "style": "primary",
+                "background": "#00D4AA"
+              },
+              {
+                "text": "Import",
+                "icon": "upload",
+                "style": "secondary",
+                "margin_left": "8px"
+              }
+            ]
+          }
+        ]
+      },
+      "center_section": {
+        "elements": [
+          {
+            "type": "request_tabs",
+            "component": "horizontal_tabs",
+            "tabs": [
+              {
+                "id": "tab_1",
+                "method": "GET",
+                "method_color": "#4CAF50",
+                "name": "Get Users",
+                "active": true,
+                "closable": true,
+                "unsaved": false
+              },
+              {
+                "id": "tab_2",
+                "method": "POST",
+                "method_color": "#FF9800",
+                "name": "Create User",
+                "active": false,
+                "closable": true,
+                "unsaved": true
+              },
+              {
+                "id": "tab_3",
+                "method": "PUT",
+                "method_color": "#2196F3",
+                "name": "Update Profile",
+                "active": false,
+                "closable": true,
+                "unsaved": false
+              }
+            ],
+            "add_tab_button": {
+              "icon": "plus",
+              "tooltip": "New Tab"
+            }
+          }
+        ]
+      },
+      "right_section": {
+        "elements": [
+          {
+            "type": "utility_buttons",
+            "buttons": [
+              {
+                "icon": "play",
+                "tooltip": "Runner",
+                "color": "#B0B0B0"
+              },
+              {
+                "icon": "shield",
+                "tooltip": "Proxy",
+                "color": "#B0B0B0"
+              },
+              {
+                "icon": "cookie",
+                "tooltip": "Cookies",
+                "color": "#B0B0B0"
+              },
+              {
+                "icon": "key",
+                "tooltip": "Vault",
+                "color": "#B0B0B0"
+              },
+              {
+                "icon": "trash",
+                "tooltip": "Trash",
+                "color": "#B0B0B0"
+              }
+            ]
+          },
+          {
+            "type": "settings_menu",
+            "component": "dropdown_menu",
+            "trigger": {
+              "icon": "settings",
+              "tooltip": "Settings"
+            },
+            "margin_left": "12px"
+          },
+          {
+            "type": "profile_menu",
+            "component": "avatar_dropdown",
+            "avatar_size": "32px",
+            "margin_left": "8px"
+          }
+        ]
+      }
+    }
+  },
+  "main_application_area": {
+    "layout": "three_panel_horizontal",
+    "panels": {
+      "left_sidebar": {
+        "name": "navigation_sidebar",
+        "width": "280px",
+        "min_width": "200px",
+        "max_width": "400px",
+        "resizable": true,
+        "collapsible": true,
+        "background": "#2D2D2D",
+        "border_right": "1px solid #404040"
+      },
+      "main_content": {
+        "name": "workspace_area",
+        "flex_grow": 1,
+        "min_width": "500px",
+        "background": "#1E1E1E",
+        "layout": "vertical_split",
+        "split_ratio": "60:40"
+      },
+      "right_sidebar": {
+        "name": "contextual_sidebar",
+        "width": "320px",
+        "min_width": "250px",
+        "max_width": "500px",
+        "resizable": true,
+        "collapsible": true,
+        "default_collapsed": true,
+        "background": "#2D2D2D",
+        "border_left": "1px solid #404040"
+      }
+    }
+  },
+  "left_sidebar_navigation": {
+    "structure": {
+      "header": {
+        "height": "60px",
+        "background": "linear-gradient(180deg, #2D2D2D 0%, #252525 100%)",
+        "border_bottom": "1px solid #404040",
+        "padding": "12px",
+        "content": {
+          "workspace_selector": {
+            "component": "dropdown_button",
+            "width": "100%",
+            "height": "36px",
+            "background": "rgba(255, 255, 255, 0.05)",
+            "border": "1px solid rgba(255, 255, 255, 0.1)",
+            "border_radius": "6px",
+            "padding": "8px 12px",
+            "text": "Personal Workspace",
+            "icon": "chevron-down",
+            "color": "#FFFFFF"
+          }
+        }
+      },
+      "navigation_tabs": {
+        "type": "vertical_tabs",
+        "padding": "8px",
+        "tabs": [
+          {
+            "id": "collections",
+            "name": "Collections",
+            "icon": "folder-open",
+            "active": true,
+            "badge": 12,
+            "color": "#00D4AA",
+            "description": "Collapsible tree view of collections (folders → requests)"
+          },
+          {
+            "id": "environments",
+            "name": "Environments",
+            "icon": "globe",
+            "badge": 3,
+            "color": "#00D4AA",
+            "description": "Environment variables and configurations"
+          },
+          {
+            "id": "flows",
+            "name": "Flows",
+            "icon": "git-branch",
+            "color": "#00D4AA",
+            "description": "Visual API workflow builder"
+          },
+          {
+            "id": "history",
+            "name": "History",
+            "icon": "clock",
+            "badge": 25,
+            "color": "#00D4AA",
+            "description": "Request history and previous calls"
+          }
+        ],
+        "tab_style": {
+          "height": "44px",
+          "margin": "2px 0",
+          "border_radius": "6px",
+          "padding": "0 12px",
+          "display": "flex",
+          "align_items": "center",
+          "hover_background": "rgba(255, 255, 255, 0.05)",
+          "active_background": "rgba(0, 212, 170, 0.1)",
+          "active_border_left": "3px solid #00D4AA"
+        }
+      },
+      "content_area": {
+        "flex_grow": 1,
+        "padding": "0",
+        "overflow": "hidden"
+      },
+      "footer": {
+        "height": "50px",
+        "background": "#252525",
+        "border_top": "1px solid #404040",
+        "padding": "8px 12px",
+        "content": {
+          "quick_actions": {
+            "layout": "grid",
+            "columns": 4,
+            "gap": "4px",
+            "buttons": [
+              {
+                "icon": "plus-circle",
+                "tooltip": "New Request (Ctrl+N)",
+                "color": "#00D4AA",
+                "size": "20px"
+              },
+              {
+                "icon": "folder-plus",
+                "tooltip": "New Collection (Ctrl+Shift+N)",
+                "color": "#00D4AA",
+                "size": "20px"
+              },
+              {
+                "icon": "upload",
+                "tooltip": "Import",
+                "color": "#FF6B6B",
+                "size": "20px"
+              },
+              {
+                "icon": "settings",
+                "tooltip": "Settings",
+                "color": "#B0B0B0",
+                "size": "20px"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "collections_tree_view": {
+    "when_active": "collections_tab_selected",
+    "structure": {
+      "search_bar": {
+        "height": "40px",
+        "padding": "8px 12px",
+        "background": "#2D2D2D",
+        "border_bottom": "1px solid #404040",
+        "input": {
+          "placeholder": "Filter collections...",
+          "background": "rgba(255, 255, 255, 0.05)",
+          "border": "1px solid rgba(255, 255, 255, 0.1)",
+          "border_radius": "4px",
+          "padding": "6px 12px",
+          "color": "#FFFFFF",
+          "icon": "search"
+        }
+      },
+      "tree_container": {
+        "flex_grow": 1,
+        "padding": "8px 0",
+        "overflow_y": "auto",
+        "custom_scrollbar": true
+      },
+      "tree_nodes": {
+        "collection": {
+          "height": "32px",
+          "padding": "0 12px 0 16px",
+          "display": "flex",
+          "align_items": "center",
+          "hover_background": "rgba(0, 212, 170, 0.1)",
+          "selected_background": "rgba(0, 212, 170, 0.2)",
+          "icon": {
+            "type": "folder",
+            "size": "16px",
+            "color": "#00D4AA",
+            "margin_right": "8px"
+          },
+          "label": {
+            "font_weight": "600",
+            "color": "#FFFFFF",
+            "flex_grow": 1
+          },
+          "actions": {
+            "visible_on_hover": true,
+            "buttons": [
+              "more-horizontal"
+            ]
+          }
+        },
+        "folder": {
+          "height": "32px",
+          "padding": "0 12px 0 32px",
+          "display": "flex",
+          "align_items": "center",
+          "hover_background": "rgba(255, 184, 0, 0.1)",
+          "selected_background": "rgba(255, 184, 0, 0.2)",
+          "icon": {
+            "type": "folder",
+            "size": "16px",
+            "color": "#FFB800",
+            "margin_right": "8px"
+          },
+          "label": {
+            "font_weight": "500",
+            "color": "#E0E0E0",
+            "flex_grow": 1
+          }
+        },
+        "request": {
+          "height": "32px",
+          "padding": "0 12px 0 48px",
+          "display": "flex",
+          "align_items": "center",
+          "hover_background": "rgba(255, 255, 255, 0.05)",
+          "selected_background": "rgba(255, 255, 255, 0.1)",
+          "method_badge": {
+            "width": "40px",
+            "height": "20px",
+            "border_radius": "4px",
+            "font_size": "10px",
+            "font_weight": "600",
+            "text_align": "center",
+            "margin_right": "8px",
+            "colors": {
+              "GET": "#4CAF50",
+              "POST": "#FF9800",
+              "PUT": "#2196F3",
+              "DELETE": "#F44336",
+              "PATCH": "#9C27B0"
+            }
+          },
+          "label": {
+            "font_weight": "400",
+            "color": "#B0B0B0",
+            "flex_grow": 1
+          },
+          "status_indicator": {
+            "size": "8px",
+            "margin_left": "8px",
+            "colors": {
+              "saved": "#4CAF50",
+              "modified": "#FF9800",
+              "error": "#F44336"
+            }
+          }
+        }
+      }
+    }
+  },
+  "main_workspace_area": {
+    "layout": "vertical_split",
+    "top_section": {
+      "name": "request_builder",
+      "height": "60%",
+      "min_height": "300px",
+      "background": "#1E1E1E"
+    },
+    "bottom_section": {
+      "name": "response_viewer",
+      "height": "40%",
+      "min_height": "200px",
+      "background": "#1E1E1E",
+      "border_top": "1px solid #404040"
+    },
+    "resize_handle": {
+      "height": "4px",
+      "background": "transparent",
+      "hover_background": "#00D4AA",
+      "cursor": "row-resize"
+    }
+  },
+  "request_builder_section": {
+    "structure": {
+      "header": {
+        "height": "60px",
+        "background": "linear-gradient(135deg, #2D2D2D 0%, #252525 100%)",
+        "border_bottom": "1px solid #404040",
+        "padding": "12px 20px",
+        "content": {
+          "request_name": {
+            "component": "editable_title",
+            "text": "Untitled Request",
+            "font_size": "18px",
+            "font_weight": "600",
+            "color": "#FFFFFF",
+            "editable": true,
+            "placeholder": "Enter request name..."
+          },
+          "request_description": {
+            "component": "expandable_textarea",
+            "text": "",
+            "font_size": "14px",
+            "color": "#B0B0B0",
+            "placeholder": "Add a description...",
+            "margin_top": "4px",
+            "expandable": true
+          }
+        }
+      },
+      "url_section": {
+        "height": "80px",
+        "background": "#1E1E1E",
+        "border_bottom": "1px solid #404040",
+        "padding": "16px 20px",
+        "description": "Request line: method dropdown + URL input + environment selector",
+        "content": {
+          "method_selector": {
+            "component": "select_dropdown",
+            "width": "120px",
+            "height": "48px",
+            "background": "#2D2D2D",
+            "border": "1px solid #404040",
+            "border_radius": "8px",
+            "options": [
+              {
+                "value": "GET",
+                "color": "#4CAF50"
+              },
+              {
+                "value": "POST",
+                "color": "#FF9800"
+              },
+              {
+                "value": "PUT",
+                "color": "#2196F3"
+              },
+              {
+                "value": "DELETE",
+                "color": "#F44336"
+              },
+              {
+                "value": "PATCH",
+                "color": "#9C27B0"
+              },
+              {
+                "value": "HEAD",
+                "color": "#607D8B"
+              },
+              {
+                "value": "OPTIONS",
+                "color": "#795548"
+              }
+            ],
+            "default": "GET"
+          },
+          "url_input": {
+            "component": "smart_input",
+            "flex_grow": 1,
+            "height": "48px",
+            "margin_left": "12px",
+            "background": "#2D2D2D",
+            "border": "1px solid #404040",
+            "border_radius": "8px",
+            "padding": "0 16px",
+            "placeholder": "Enter request URL or paste cURL command",
+            "color": "#FFFFFF",
+            "features": {
+              "autocomplete": true,
+              "variable_substitution": true,
+              "curl_import": true,
+              "validation": true
+            }
+          },
+          "environment_selector": {
+            "component": "select_dropdown",
+            "width": "150px",
+            "height": "48px",
+            "margin_left": "12px",
+            "background": "#2D2D2D",
+            "border": "1px solid #404040",
+            "border_radius": "8px",
+            "placeholder": "No Environment",
+            "options": [
+              {
+                "value": "development",
+                "text": "Development"
+              },
+              {
+                "value": "staging",
+                "text": "Staging"
+              },
+              {
+                "value": "production",
+                "text": "Production"
+              }
+            ]
+          },
+          "send_button": {
+            "component": "primary_button",
+            "width": "100px",
+            "height": "48px",
+            "margin_left": "12px",
+            "background": "linear-gradient(135deg, #00D4AA 0%, #00B894 100%)",
+            "border_radius": "8px",
+            "color": "#FFFFFF",
+            "font_weight": "600",
+            "text": "Send",
+            "keyboard_shortcut": "Ctrl+Enter",
+            "hover_effects": {
+              "scale": "1.02",
+              "glow": "0 0 20px rgba(0, 212, 170, 0.3)"
+            }
+          },
+          "save_share_options": {
+            "component": "button_group",
+            "margin_left": "8px",
+            "buttons": [
+              {
+                "icon": "save",
+                "tooltip": "Save",
+                "style": "ghost"
+              },
+              {
+                "icon": "share",
+                "tooltip": "Share",
+                "style": "ghost"
+              }
+            ]
+          }
+        }
+      },
+      "tabs_section": {
+        "tab_bar": {
+          "height": "48px",
+          "background": "#252525",
+          "border_bottom": "1px solid #404040",
+          "padding": "0 20px",
+          "tabs": [
+            {
+              "id": "params",
+              "label": "Params",
+              "icon": "list",
+              "active": true,
+              "badge": 3
+            },
+            {
+              "id": "authorization",
+              "label": "Authorization",
+              "icon": "shield",
+              "indicator": true
+            },
+            {
+              "id": "headers",
+              "label": "Headers",
+              "icon": "layers",
+              "badge": 5
+            },
+            {
+              "id": "body",
+              "label": "Body",
+              "icon": "file-text",
+              "indicator": true
+            },
+            {
+              "id": "pre_request",
+              "label": "Pre-request Script",
+              "icon": "code",
+              "status": "success"
+            },
+            {
+              "id": "tests",
+              "label": "Tests",
+              "icon": "check-circle",
+              "status": "warning"
+            },
+            {
+              "id": "settings",
+              "label": "Settings",
+              "icon": "settings",
+              "position": "right"
+            }
+          ]
+        },
+        "content_area": {
+          "flex_grow": 1,
+          "padding": "20px",
+          "background": "#1E1E1E"
+        }
+      }
+    }
+  },
+  "request_tabs_content": {
+    "params_tab": {
+      "when_active": "params_tab_selected",
+      "content": {
+        "query_params": {
+          "title": "Query Parameters",
+          "component": "key_value_editor",
+          "add_button": "Add Parameter",
+          "bulk_edit": true,
+          "columns": [
+            {
+              "name": "key",
+              "width": "40%",
+              "placeholder": "Parameter name"
+            },
+            {
+              "name": "value",
+              "width": "40%",
+              "placeholder": "Parameter value"
+            },
+            {
+              "name": "description",
+              "width": "15%",
+              "placeholder": "Description"
+            },
+            {
+              "name": "actions",
+              "width": "5%"
+            }
+          ]
+        },
+        "path_variables": {
+          "title": "Path Variables",
+          "component": "key_value_editor",
+          "auto_detected": true,
+          "read_only_keys": true
+        }
+      }
+    },
+    "authorization_tab": {
+      "when_active": "authorization_tab_selected",
+      "content": {
+        "auth_type_selector": {
+          "component": "radio_group",
+          "options": [
+            "No Auth",
+            "API Key",
+            "Bearer Token",
+            "Basic Auth",
+            "OAuth 1.0",
+            "OAuth 2.0",
+            "AWS Signature",
+            "NTLM Authentication"
+          ],
+          "default": "No Auth"
+        },
+        "auth_config_area": {
+          "component": "dynamic_form",
+          "changes_based_on": "selected_auth_type"
+        }
+      }
+    },
+    "headers_tab": {
+      "when_active": "headers_tab_selected",
+      "content": {
+        "headers_editor": {
+          "component": "key_value_editor",
+          "add_button": "Add Header",
+          "bulk_edit": true,
+          "preset_headers": true,
+          "auto_suggestions": true
+        }
+      }
+    },
+    "body_tab": {
+      "when_active": "body_tab_selected",
+      "content": {
+        "body_type_selector": {
+          "component": "radio_group",
+          "layout": "horizontal",
+          "options": [
+            "none",
+            "form-data",
+            "x-www-form-urlencoded",
+            "raw",
+            "binary",
+            "GraphQL"
+          ],
+          "default": "none"
+        },
+        "body_editor": {
+          "component": "dynamic_editor",
+          "changes_based_on": "selected_body_type",
+          "syntax_highlighting": true,
+          "auto_formatting": true
+        }
+      }
+    },
+    "scripts_tabs": {
+      "when_active": "pre_request_or_tests_tab_selected",
+      "content": {
+        "code_editor": {
+          "component": "monaco_editor",
+          "language": "javascript",
+          "theme": "vs-dark",
+          "features": {
+            "autocomplete": true,
+            "syntax_highlighting": true,
+            "error_detection": true,
+            "snippets": true
+          }
+        },
+        "snippets_sidebar": {
+          "component": "collapsible_panel",
+          "width": "200px",
+          "position": "right",
+          "content": "code_snippets_library"
+        }
+      }
+    }
+  },
+  "response_viewer_section": {
+    "structure": {
+      "status_header": {
+        "height": "60px",
+        "background": "linear-gradient(135deg, #252525 0%, #1E1E1E 100%)",
+        "border_bottom": "1px solid #404040",
+        "padding": "12px 20px",
+        "content": {
+          "status_badges": {
+            "layout": "horizontal",
+            "gap": "12px",
+            "badges": [
+              {
+                "type": "status_code",
+                "component": "status_badge",
+                "font_size": "16px",
+                "font_weight": "700",
+                "padding": "6px 12px",
+                "border_radius": "6px",
+                "colors": {
+                  "2xx": "#4CAF50",
+                  "3xx": "#FF9800",
+                  "4xx": "#F44336",
+                  "5xx": "#9C27B0"
+                }
+              },
+              {
+                "type": "response_time",
+                "icon": "clock",
+                "color": "#00D4AA",
+                "format": "ms"
+              },
+              {
+                "type": "response_size",
+                "icon": "hard-drive",
+                "color": "#2196F3",
+                "format": "bytes"
+              },
+              {
+                "type": "timestamp",
+                "icon": "calendar",
+                "color": "#B0B0B0",
+                "format": "relative"
+              }
+            ]
+          },
+          "action_buttons": {
+            "position": "right",
+            "buttons": [
+              {
+                "icon": "copy",
+                "tooltip": "Copy Response",
+                "action": "copy_response"
+              },
+              {
+                "icon": "download",
+                "tooltip": "Save Response",
+                "action": "save_response"
+              },
+              {
+                "icon": "share",
+                "tooltip": "Share Response",
+                "action": "share_response"
+              },
+              {
+                "icon": "git-compare",
+                "tooltip": "Compare Responses",
+                "action": "compare_responses"
+              }
+            ]
+          }
+        }
+      },
+      "tabs_section": {
+        "tab_bar": {
+          "height": "48px",
+          "background": "#252525",
+          "border_bottom": "1px solid #404040",
+          "padding": "0 20px",
+          "tabs": [
+            {
+              "id": "body",
+              "label": "Body",
+              "icon": "file-text",
+              "active": true,
+              "sub_tabs": [
+                {
+                  "id": "pretty",
+                  "label": "Pretty",
+                  "active": true,
+                  "description": "JSON/code viewer with syntax highlighting"
+                },
+                {
+                  "id": "raw",
+                  "label": "Raw",
+                  "description": "Raw response data"
+                },
+                {
+                  "id": "preview",
+                  "label": "Preview",
+                  "description": "HTML preview rendering"
+                }
+              ]
+            },
+            {
+              "id": "headers",
+              "label": "Headers",
+              "icon": "layers",
+              "badge": 8
+            },
+            {
+              "id": "cookies",
+              "label": "Cookies",
+              "icon": "cookie",
+              "badge": 2
+            },
+            {
+              "id": "test_results",
+              "label": "Test Results",
+              "icon": "check-circle",
+              "status": "success",
+              "badge": "5/5"
+            },
+            {
+              "id": "timeline",
+              "label": "Timeline",
+              "icon": "activity"
+            },
+            {
+              "id": "console",
+              "label": "Console",
+              "icon": "terminal",
+              "error_count": 0,
+              "description": "Network logs and console output"
+            }
+          ]
+        },
+        "content_area": {
+          "flex_grow": 1,
+          "padding": "0",
+          "background": "#1E1E1E",
+          "empty_state": {
+            "when": "no_response_yet",
+            "content": {
+              "illustration": {
+                "type": "cute_astronaut",
+                "size": "200px",
+                "description": "Cute astronaut illustration when no response yet"
+              },
+              "title": {
+                "text": "Enter URL and click Send to get a response",
+                "font_size": "18px",
+                "color": "#B0B0B0",
+                "margin_top": "16px"
+              },
+              "subtitle": {
+                "text": "The response will appear here",
+                "font_size": "14px",
+                "color": "#808080",
+                "margin_top": "8px"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "console_panel": {
+    "name": "console_bottom_panel",
+    "height": "200px",
+    "min_height": "100px",
+    "max_height": "400px",
+    "resizable": true,
+    "collapsible": true,
+    "default_collapsed": true,
+    "background": "#1E1E1E",
+    "border_top": "1px solid #404040",
+    "description": "Console at the bottom for network logs",
+    "header": {
+      "height": "40px",
+      "background": "#252525",
+      "border_bottom": "1px solid #404040",
+      "padding": "8px 16px",
+      "content": {
+        "title": {
+          "text": "Console",
+          "font_size": "14px",
+          "font_weight": "600",
+          "color": "#FFFFFF"
+        },
+        "actions": {
+          "position": "right",
+          "buttons": [
+            {
+              "icon": "trash",
+              "tooltip": "Clear Console",
+              "size": "16px"
+            },
+            {
+              "icon": "x",
+              "tooltip": "Close Console",
+              "size": "16px"
+            }
+          ]
+        }
+      }
+    },
+    "content": {
+      "type": "log_viewer",
+      "auto_scroll": true,
+      "timestamps": true,
+      "log_levels": [
+        "info",
+        "warn",
+        "error",
+        "debug"
+      ],
+      "filters": true
+    }
+  },
+  "response_tabs_content": {
+    "body_tab": {
+      "when_active": "body_tab_selected",
+      "sub_tabs": {
+        "pretty": {
+          "component": "json_tree_viewer",
+          "features": {
+            "syntax_highlighting": true,
+            "collapsible_nodes": true,
+            "search": true,
+            "copy_path": true
+          }
+        },
+        "raw": {
+          "component": "code_viewer",
+          "features": {
+            "syntax_highlighting": true,
+            "line_numbers": true,
+            "word_wrap": true,
+            "search": true
+          }
+        },
+        "preview": {
+          "component": "html_preview",
+          "features": {
+            "safe_rendering": true,
+            "responsive_preview": true,
+            "zoom_controls": true
+          }
+        }
+      }
+    },
+    "headers_tab": {
+      "when_active": "headers_tab_selected",
+      "content": {
+        "headers_table": {
+          "component": "key_value_table",
+          "columns": [
+            "Header",
+            "Value"
+          ],
+          "searchable": true,
+          "copyable": true
+        }
+      }
+    },
+    "test_results_tab": {
+      "when_active": "test_results_tab_selected",
+      "content": {
+        "test_summary": {
+          "component": "test_results_summary",
+          "show_passed": true,
+          "show_failed": true,
+          "show_skipped": true
+        },
+        "test_details": {
+          "component": "test_results_list",
+          "expandable": true,
+          "show_assertions": true
+        }
+      }
+    }
+  },
+  "right_contextual_sidebar": {
+    "when_visible": "user_expands_right_sidebar",
+    "structure": {
+      "header": {
+        "height": "48px",
+        "background": "#252525",
+        "border_bottom": "1px solid #404040",
+        "padding": "12px 16px",
+        "content": {
+          "title": {
+            "text": "Documentation",
+            "font_size": "16px",
+            "font_weight": "600",
+            "color": "#FFFFFF"
+          },
+          "close_button": {
+            "icon": "x",
+            "size": "16px",
+            "color": "#B0B0B0",
+            "position": "right"
+          }
+        }
+      },
+      "content_area": {
+        "flex_grow": 1,
+        "padding": "16px",
+        "overflow_y": "auto",
+        "content_types": {
+          "documentation": {
+            "component": "markdown_viewer",
+            "editable": true
+          },
+          "comments": {
+            "component": "comments_thread",
+            "real_time": true
+          },
+          "activity_feed": {
+            "component": "activity_timeline",
+            "filters": true
+          },
+          "code_snippets": {
+            "component": "code_snippets_generator",
+            "languages": [
+              "curl",
+              "javascript",
+              "python",
+              "java",
+              "go"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "global_features": {
+    "keyboard_shortcuts": {
+      "global": {
+        "Ctrl+K": "open_global_search",
+        "Ctrl+N": "new_request",
+        "Ctrl+Shift+N": "new_collection",
+        "Ctrl+S": "save_current_request",
+        "Ctrl+Enter": "send_request",
+        "Ctrl+\\": "toggle_left_sidebar",
+        "Ctrl+Shift+\\": "toggle_right_sidebar",
+        "Ctrl+1": "switch_to_collections",
+        "Ctrl+2": "switch_to_environments",
+        "Ctrl+3": "switch_to_history",
+        "F11": "toggle_fullscreen"
+      }
+    },
+    "theme_system": {
+      "default_theme": "dark",
+      "available_themes": [
+        "dark",
+        "light",
+        "auto"
+      ],
+      "custom_themes": true,
+      "theme_variables": {
+        "primary": "#00D4AA",
+        "secondary": "#FF6B6B",
+        "background_primary": "#1E1E1E",
+        "background_secondary": "#2D2D2D",
+        "text_primary": "#FFFFFF",
+        "text_secondary": "#B0B0B0",
+        "border": "#404040",
+        "success": "#4CAF50",
+        "error": "#F44336",
+        "warning": "#FF9800"
+      }
+    },
+    "responsive_behavior": {
+      "breakpoints": {
+        "sm": "640px",
+        "md": "768px",
+        "lg": "1024px",
+        "xl": "1280px"
+      },
+      "adaptive_layout": {
+        "collapse_sidebars_on_small_screens": true,
+        "stack_panels_vertically_on_mobile": true,
+        "hide_non_essential_elements": true
+      }
+    },
+    "accessibility": {
+      "keyboard_navigation": true,
+      "screen_reader_support": true,
+      "high_contrast_mode": true,
+      "focus_indicators": true,
+      "aria_labels": true
+    },
+    "performance_optimizations": {
+      "virtual_scrolling": true,
+      "lazy_loading": true,
+      "code_splitting": true,
+      "image_optimization": true,
+      "memory_management": true
+    }
+  },
+  "state_management": {
+    "stores": {
+      "app_store": {
+        "current_workspace": "string",
+        "active_environment": "string",
+        "ui_preferences": "object",
+        "keyboard_shortcuts": "object"
+      },
+      "collections_store": {
+        "collections": "array",
+        "active_collection": "string",
+        "active_request": "string",
+        "request_history": "array"
+      },
+      "request_store": {
+        "current_request": "object",
+        "request_tabs": "array",
+        "active_tab": "string",
+        "unsaved_changes": "boolean"
+      },
+      "response_store": {
+        "current_response": "object",
+        "response_history": "array",
+        "active_response_tab": "string"
+      },
+      "environment_store": {
+        "environments": "array",
+        "active_environment": "string",
+        "variables": "object"
+      }
+    }
+  },
+  "data_persistence": {
+    "local_storage": {
+      "user_preferences": true,
+      "window_state": true,
+      "recent_workspaces": true
+    },
+    "indexed_db": {
+      "collections": true,
+      "environments": true,
+      "request_history": true,
+      "response_cache": true
+    },
+    "tauri_store": {
+      "sensitive_data": true,
+      "api_keys": true,
+      "certificates": true
+    }
+  },
+  "implementation_notes": {
+    "component_hierarchy": "Start with main layout, then implement each section as separate components",
+    "styling_approach": "Use Tailwind utility classes with Ant Design components, create custom CSS variables for theme",
+    "state_management": "Use Zustand for global state, React hooks for local component state",
+    "performance": "Implement virtual scrolling for large lists, lazy load heavy components",
+    "testing": "Unit tests for utilities, integration tests for user workflows",
+    "accessibility": "Follow WCAG 2.1 guidelines, test with screen readers",
+    "desktop_integration": "Use Tauri APIs for file system, notifications, and native features"
+  },
+  "dummy_data_for_populated_ui": {
+    "description": "Use dummy collections, requests, and response data so the UI looks populated",
+    "collections": [
+      {
+        "id": "col_1",
+        "name": "NSSF API Collection",
+        "description": "Main API endpoints for NSSF services",
+        "folders": [
+          {
+            "id": "folder_1",
+            "name": "Authentication",
+            "requests": [
+              {
+                "id": "req_1",
+                "name": "Login User",
+                "method": "POST",
+                "url": "https://api.nssf.go.ug/auth/login",
+                "status": "saved"
+              },
+              {
+                "id": "req_2",
+                "name": "Refresh Token",
+                "method": "POST",
+                "url": "https://api.nssf.go.ug/auth/refresh",
+                "status": "modified"
+              }
+            ]
+          },
+          {
+            "id": "folder_2",
+            "name": "User Management",
+            "requests": [
+              {
+                "id": "req_3",
+                "name": "Get Users",
+                "method": "GET",
+                "url": "https://api.nssf.go.ug/users",
+                "status": "saved"
+              },
+              {
+                "id": "req_4",
+                "name": "Create User",
+                "method": "POST",
+                "url": "https://api.nssf.go.ug/users",
+                "status": "modified"
+              },
+              {
+                "id": "req_5",
+                "name": "Update Profile",
+                "method": "PUT",
+                "url": "https://api.nssf.go.ug/users/profile",
+                "status": "saved"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "col_2",
+        "name": "Payment Gateway",
+        "description": "Payment processing endpoints",
+        "folders": [
+          {
+            "id": "folder_3",
+            "name": "Transactions",
+            "requests": [
+              {
+                "id": "req_6",
+                "name": "Process Payment",
+                "method": "POST",
+                "url": "https://api.nssf.go.ug/payments/process",
+                "status": "saved"
+              },
+              {
+                "id": "req_7",
+                "name": "Get Transaction",
+                "method": "GET",
+                "url": "https://api.nssf.go.ug/payments/transactions/{id}",
+                "status": "saved"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "environments": [
+      {
+        "id": "env_1",
+        "name": "Development",
+        "variables": {
+          "base_url": "https://dev-api.nssf.go.ug",
+          "api_key": "dev_key_123",
+          "timeout": "30000"
+        }
+      },
+      {
+        "id": "env_2",
+        "name": "Staging",
+        "variables": {
+          "base_url": "https://staging-api.nssf.go.ug",
+          "api_key": "staging_key_456",
+          "timeout": "30000"
+        }
+      },
+      {
+        "id": "env_3",
+        "name": "Production",
+        "variables": {
+          "base_url": "https://api.nssf.go.ug",
+          "api_key": "prod_key_789",
+          "timeout": "60000"
+        }
+      }
+    ],
+    "sample_request": {
+      "name": "Get Users",
+      "method": "GET",
+      "url": "https://api.nssf.go.ug/users",
+      "headers": [
+        {
+          "key": "Authorization",
+          "value": "Bearer {{token}}",
+          "enabled": true
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json",
+          "enabled": true
+        },
+        {
+          "key": "Accept",
+          "value": "application/json",
+          "enabled": true
+        }
+      ],
+      "params": [
+        {
+          "key": "page",
+          "value": "1",
+          "description": "Page number",
+          "enabled": true
+        },
+        {
+          "key": "limit",
+          "value": "10",
+          "description": "Items per page",
+          "enabled": true
+        },
+        {
+          "key": "search",
+          "value": "",
+          "description": "Search term",
+          "enabled": false
+        }
+      ]
+    },
+    "sample_response": {
+      "status_code": 200,
+      "status_text": "OK",
+      "response_time": "245ms",
+      "response_size": "2.1 KB",
+      "timestamp": "2024-01-15T10:30:45Z",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "X-RateLimit-Remaining",
+          "value": "99"
+        },
+        {
+          "key": "Server",
+          "value": "nginx/1.18.0"
+        }
+      ],
+      "body": {
+        "success": true,
+        "data": {
+          "users": [
+            {
+              "id": 1,
+              "name": "John Doe",
+              "email": "john.doe@nssf.go.ug",
+              "role": "admin",
+              "created_at": "2024-01-10T08:00:00Z"
+            },
+            {
+              "id": 2,
+              "name": "Jane Smith",
+              "email": "jane.smith@nssf.go.ug",
+              "role": "user",
+              "created_at": "2024-01-12T09:15:00Z"
+            }
+          ],
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 25,
+            "pages": 3
+          }
+        },
+        "message": "Users retrieved successfully"
+      }
+    },
+    "request_history": [
+      {
+        "id": "hist_1",
+        "name": "Get Users",
+        "method": "GET",
+        "url": "https://api.nssf.go.ug/users",
+        "status_code": 200,
+        "timestamp": "2024-01-15T10:30:45Z"
+      },
+      {
+        "id": "hist_2",
+        "name": "Login User",
+        "method": "POST",
+        "url": "https://api.nssf.go.ug/auth/login",
+        "status_code": 200,
+        "timestamp": "2024-01-15T10:25:30Z"
+      },
+      {
+        "id": "hist_3",
+        "name": "Create User",
+        "method": "POST",
+        "url": "https://api.nssf.go.ug/users",
+        "status_code": 201,
+        "timestamp": "2024-01-15T10:20:15Z"
+      }
+    ]
+  },
+  "nssf_branding": {
+    "color_scheme": {
+      "primary": "#00D4AA",
+      "secondary": "#FFD700",
+      "accent": "#FF6B6B",
+      "success": "#4CAF50",
+      "warning": "#FF9800",
+      "error": "#F44336",
+      "background_primary": "#1E1E1E",
+      "background_secondary": "#2D2D2D",
+      "text_primary": "#FFFFFF",
+      "text_secondary": "#B0B0B0",
+      "border": "#404040"
+    },
+    "logo": {
+      "type": "svg_icon",
+      "colors": [
+        "#00D4AA",
+        "#FFD700"
+      ],
+      "size": "24px"
+    },
+    "typography": {
+      "font_family": "Inter, system-ui, sans-serif",
+      "font_weights": [
+        400,
+        500,
+        600,
+        700
+      ]
+    }
+  },
+  "output_requirements": {
+    "single_react_component": {
+      "description": "Generate one complete React + Tailwind layout that includes all sections",
+      "includes": [
+        "Sidebar with collections tree and icons",
+        "Topbar with workspaces, search, tabs, and actions",
+        "Main panel with request builder tabs (Params, Auth, Headers, Body, Scripts, Settings)",
+        "Response viewer with Pretty/Raw/Preview tabs",
+        "Empty states with illustrations",
+        "Console panel at bottom"
+      ]
+    },
+    "component_structure": {
+      "inline_components": true,
+      "no_ui_splitting_yet": true,
+      "prepare_for_modularization": true,
+      "responsive_design": true,
+      "sidebar_collapsible_on_small_screens": true
+    },
+    "styling_requirements": {
+      "framework": "Tailwind CSS",
+      "component_library": "Ant Design",
+      "theme_support": [
+        "dark",
+        "light"
+      ],
+      "nssf_branding": true,
+      "professional_developer_focused": true
+    }
+  }
+}
